@@ -30,6 +30,6 @@ class TblPedido extends Model
 
     public function articulos(): HasMany
     {
-        return $this->hasMany(TblPedido::class, 'PedidoId', 'PedidoId'); // opcional según tu sistema
+        return $this->hasMany(TblPedido::class, 'PedidoId', 'PedidoId');
     }
 }

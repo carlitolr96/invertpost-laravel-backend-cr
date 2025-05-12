@@ -8,18 +8,14 @@
         <thead class="table-dark">
             <tr>
                 <th>ID</th>
-                <th>NA</th>
-                <th>NA</th>
+                <th>Fecha de Registro</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($fpedidos as $pedido)
+            @foreach ($pedidos as $pedido)
             <tr>
-                <td>{{ $pedidos->id }}</td>
-                <td>{{ $pedidos->nombre }}</td>
-                <td>{{ $pedidos->telefono }}</td>
-                <td>{{ $pedidos->tipo_cliente }}</td>
-                <td>{{ $pedidos->created_at->format('d/m/Y H:i') }}</td>
+                <td>{{ $pedido->ClienteId }}</td>
+                <td>{{ $pedido->fecha_pedido }}</td>
             </tr>
             @endforeach
         </tbody>
