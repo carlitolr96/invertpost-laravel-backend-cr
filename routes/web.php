@@ -32,3 +32,7 @@ Route::get('/clientes/{cliente}/edit', [TblClienteController::class, 'edit'])->n
 Route::get('/articulos/{articulo}/edit', [TblArticuloController::class, 'edit'])->name('articulo.edit');
 Route::get('/facturas/{factura}/edit', [TblFacturaController::class, 'edit'])->name('factura.edit');
 Route::get('/pedidos/{pedido}/edit', [TblPedidoController::class, 'edit'])->name('pedido.edit');
+
+Route::post('/clientes', [TblClienteController::class, 'store'])->name('clientes.store');
+
+Route::resource('clientes', TblClienteController::class);

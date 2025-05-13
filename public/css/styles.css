@@ -1,5 +1,7 @@
 html, body {
-    height: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
     background: #7d7d7d;
     background: linear-gradient(0deg, rgba(125, 125, 125, 1) 0%, rgba(191, 191, 191, 1) 100%); /* Degradado de gris */
 }
@@ -19,8 +21,6 @@ html, body {
     color: #6c757d; 
     margin-bottom: 1.5rem;
 }
-
-
 
 .container {
     background-color: #fff;

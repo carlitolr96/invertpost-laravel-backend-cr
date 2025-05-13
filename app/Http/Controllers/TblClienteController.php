@@ -104,6 +104,6 @@ class TblClienteController extends Controller
 
     public function edit(TblCliente $cliente)
     {
-        return view('clientes.edit', compact('cliente'));
+        return view('edit.edit_cliente', compact('cliente'));
     }
 }
