@@ -6,6 +6,7 @@ use App\Models\TblPY1;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class TblPY1Controller extends Controller
 {

@@ -1,6 +1,6 @@
 <div class="modal fade" id="crearClienteModal" tabindex="-1" aria-labelledby="crearClienteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form class="modal-content"method="POST" action="{{ route('clientes.store') }}">
+        <form id="clienteForm" class="modal-content" method="POST" action="{{ route('clientes.store') }}">
             @csrf
             <div class="modal-header">
                 <h5 class="modal-title" id="crearClienteModalLabel">Agregar Nuevo Cliente</h5>
@@ -28,3 +28,56 @@
         </form>
     </div>
 </div>
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('clienteForm');
+    if (form) {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+
+            fetch('/clientes', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json'
+                },
+                body: formData
+            })
+            .then(async response => {
+                if (!response.ok) {
+                    let msg = 'Error al guardar el cliente.';
+                    try {
+                        const errData = await response.json();
+                        if (errData.errors) {
+                            msg = Object.values(errData.errors).flat().join('<br>');
+                        } else if (errData.message) {
+                            msg = errData.message;
+                        }
+                    } catch {}
+                    document.getElementById('formErrores').innerHTML = msg;
+                    throw new Error(msg);
+                }
+                return response.json();
+            })
+            .then(data => {
+
+                document.getElementById('formErrores').innerHTML = '';
+
+                var modal = bootstrap.Modal.getInstance(document.getElementById('crearClienteModal'));
+                modal.hide();
+
+                form.reset();
+
+            })
+            .catch(error => {
+
+            });
+        });
+    }
+});
+</script>
+@endsection
