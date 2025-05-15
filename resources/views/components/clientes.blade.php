@@ -1,11 +1,10 @@
 @extends('layouts.app')
 @section('content')
-@section('scripts')
-<script src="{{ asset('js/clientes.js') }}"></script>
-@endsection
+
+@include('create.modal-crear-cliente')
+@include('edit.modal-edit-cliente')
 
 <div>
-
     @if ($clientes->count() > 0)
     <div class="row">
         <div class="col-8">
@@ -38,6 +37,24 @@
                     <td>{{ $cliente->telefono }}</td>
                     <td>{{ $cliente->tipo_cliente }}</td>
                     <td>{{ $cliente->created_at->format('d/m/Y H:i') }}</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-warning"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editarClienteModal"
+                            data-id="{{ $cliente->ClienteId }}"
+                            data-nombre="{{ $cliente->nombre }}"
+                            data-telefono="{{ $cliente->telefono }}"
+                            data-tipo_cliente="{{ $cliente->tipo_cliente }}">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <form action="{{ route('clientes.destroy', $cliente->ClienteId) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Seguro que deseas eliminar este cliente?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
@@ -53,6 +70,4 @@
     </div>
     @endif
 </div>
-
-@include('create.modal-crear-cliente')
 @endsection

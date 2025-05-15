@@ -29,7 +29,7 @@
     </div>
 </div>
 
-@section('scripts')
+@push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('clienteForm');
@@ -80,4 +80,4 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 </script>
-@endsection
+@endpush

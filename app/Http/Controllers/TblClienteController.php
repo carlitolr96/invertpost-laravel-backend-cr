@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\JsonResponse;
 
+
 class TblClienteController extends Controller
 {
     /**
@@ -91,7 +92,18 @@ class TblClienteController extends Controller
         return response()->json($cliente);
     }
 
-    public function destroy(int $id): JsonResponse
+    public function destroy(int $id)
+    {
+        $cliente = TblCliente::find($id);
+        if (!$cliente) {
+            return redirect()->route('components.clientes')->with('error', 'Cliente no encontrado.');
+        }
+
+        $cliente->delete();
+        return redirect()->route('components.clientes')->with('success', 'Cliente eliminado correctamente.');
+    }
+
+    public function destroyApi(int $id): JsonResponse
     {
         $cliente = TblCliente::find($id);
         if (!$cliente) {
@@ -99,7 +111,7 @@ class TblClienteController extends Controller
         }
 
         $cliente->delete();
-        return response()->json(['message' => 'Cliente eliminado']);
+        return response()->json(['message' => 'Cliente eliminado correctamente.']);
     }
 
     public function edit(TblCliente $cliente)
