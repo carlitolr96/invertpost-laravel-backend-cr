@@ -23,7 +23,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary">Guardar Cliente</button>
+                <button type="submit" class="btn btn-success">Guardar Cliente</button>
             </div>
         </form>
     </div>
