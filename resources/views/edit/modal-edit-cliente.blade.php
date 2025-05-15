@@ -42,13 +42,6 @@
                 var telefono = button.getAttribute('data-telefono');
                 var tipo_cliente = button.getAttribute('data-tipo_cliente');
 
-                console.log({
-                    id,
-                    nombre,
-                    telefono,
-                    tipo_cliente
-                });
-
                 document.getElementById('editarClienteId').value = id;
                 document.getElementById('editarNombre').value = nombre;
                 document.getElementById('editarTelefono').value = telefono;

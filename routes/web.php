@@ -48,4 +48,5 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/usuarios', [TblPY1Controller::class, 'store'])->name('usuarios.store');
 
     Route::resource('clientes', TblClienteController::class);
+    Route::resource('articulos', TblArticuloController::class);
 });
