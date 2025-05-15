@@ -61,6 +61,48 @@ Este proyecto es una API RESTful desarrollada con Laravel para la gestión de un
    ```
 
 ---
+## 🧑‍💻 Acceder
+- **Usuario:**
+   prueba
+
+- **Usuario:**
+   12345678 o php artisan key:generate
+
+---
+
+## 😎 Características principales
+
+- **Autenticación:**  
+  Permite iniciar y cerrar sesión de manera segura.
+
+- **Gestión de Clientes:**  
+  - Agregar nuevos clientes desde un modal.
+  - Editar y eliminar clientes con confirmación.
+  - Listado de clientes con paginación.
+  - Interfaz moderna y responsiva.
+
+- **Gestión de Artículos:**  
+  - Agregar nuevos artículos desde un modal.
+  - Editar y eliminar artículos con confirmación.
+  - Listado de artículos con paginación.
+  - Interfaz mejorada y amigable.
+
+- **AJAX y Experiencia de Usuario:**  
+  - Formularios de creación y edición por AJAX (sin recargar la página).
+  - Actualización dinámica de tablas tras agregar o editar registros.
+  - Manejo de errores y validaciones en tiempo real.
+
+- **Diseño Mejorado:**  
+  - Uso de Bootstrap 5 para una apariencia profesional.
+  - Modales para todas las operaciones CRUD.
+  - Botones de acción claros y accesibles.
+
+- **Otras mejoras:**  
+  - Mensajes de éxito y error tras cada operación.
+  - Código organizado y reutilizable.
+  - Estructura de carpetas clara para vistas y componentes.
+
+---
 
 ## 🛠 Estructura del Proyecto
 
@@ -73,24 +115,33 @@ Este proyecto es una API RESTful desarrollada con Laravel para la gestión de un
 
 ---
 
+## 👍 Uso
+
+- Accede a la aplicación y loguéate.
+- Gestiona clientes y artículos desde el menú principal.
+- Usa los botones **Nuevo**, **Editar** y **Eliminar** para administrar los registros.
+- Cierra sesión desde el botón correspondiente.
+
+---
+
 ## 📦 Endpoints de la API
 
 > Todos los endpoints devuelven respuestas JSON.
 
 ### Productos
 ```
-POST   /api/productos          → Crear producto  
-GET    /api/productos          → Listar productos (con filtros y paginación)  
-GET    /api/productos/{id}     → Mostrar un producto  
-PUT    /api/productos/{id}     → Actualizar producto  
-DELETE /api/productos/{id}     → Eliminar producto
+POST   /api/v1/productos          → Crear producto  
+GET    /apiv1/productos          → Listar productos (con filtros y paginación)  
+GET    /api/v1/productos/{id}     → Mostrar un producto  
+PUT    /api/v1/productos/{id}     → Actualizar producto  
+DELETE /api/v1/productos/{id}     → Eliminar producto
 ```
 
 ### Clientes, Usuarios y Pedidos tienen rutas similares:
 ```
-/api/clientes
-/api/usuarios
-/api/pedidos
+/api/v1/clientes
+/api/v1/usuarios
+/api/v1/pedidos
 ```
 
 ---
@@ -100,7 +151,7 @@ DELETE /api/productos/{id}     → Eliminar producto
 Puedes aplicar filtros en los listados mediante query parameters:
 
 ```http
-GET /api/productos?nombre=camisa&precio_min=10&precio_max=50&stock_min=5&page=1&per_page=10
+GET /api/v1/productos?nombre=camisa&precio_min=10&precio_max=50&stock_min=5&page=1&per_page=10
 ```
 
 **Parámetros disponibles:**
