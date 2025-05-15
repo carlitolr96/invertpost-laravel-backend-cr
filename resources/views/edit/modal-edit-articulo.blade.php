@@ -40,81 +40,90 @@
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    var editarModal = document.getElementById('editarArticuloModal');
-    if (editarModal) {
-        editarModal.addEventListener('show.bs.modal', function (event) {
-            var button = event.relatedTarget;
-            var id = button.getAttribute('data-id');
-            var descripcion = button.getAttribute('data-descripcion');
-            var fabricante = button.getAttribute('data-fabricante');
-            var codigo_barras = button.getAttribute('data-codigo_barras');
-            var precio = button.getAttribute('data-precio');
-            var stock = button.getAttribute('data-stock');
+    document.addEventListener('DOMContentLoaded', function() {
+        var editarModal = document.getElementById('editarArticuloModal');
+        if (editarModal) {
+            editarModal.addEventListener('show.bs.modal', function(event) {
+                var button = event.relatedTarget;
+                var id = button.getAttribute('data-id');
+                var descripcion = button.getAttribute('data-descripcion');
+                var fabricante = button.getAttribute('data-fabricante');
+                var codigo_barras = button.getAttribute('data-codigo_barras');
+                var precio = button.getAttribute('data-precio');
+                var stock = button.getAttribute('data-stock');
 
-            document.getElementById('editarArticuloId').value = id;
-            document.getElementById('editarDescripcion').value = descripcion;
-            document.getElementById('editarFabricante').value = fabricante;
-            document.getElementById('editarCodigoBarras').value = codigo_barras;
-            document.getElementById('editarPrecio').value = precio;
-            document.getElementById('editarStock').value = stock;
+                document.getElementById('editarArticuloId').value = id;
+                document.getElementById('editarDescripcion').value = descripcion;
+                document.getElementById('editarFabricante').value = fabricante;
+                document.getElementById('editarCodigoBarras').value = codigo_barras;
+                document.getElementById('editarPrecio').value = precio;
+                document.getElementById('editarStock').value = stock;
 
-            document.getElementById('editarArticuloForm').action = '/articulos/' + id;
-        });
-    }
-
-    
-    const form = document.getElementById('editarArticuloForm');
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const id = document.getElementById('editarArticuloId').value;
-            const formData = new FormData(form);
-
-            fetch('/articulos/' + id, {
-                method: 'POST', 
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'Accept': 'application/json'
-                },
-                body: formData
-            })
-            .then(async response => {
-                if (!response.ok) {
-                    let msg = 'Error al actualizar el artículo.';
-                    try {
-                        const errData = await response.json();
-                        if (errData.errors) {
-                            msg = Object.values(errData.errors).flat().join('<br>');
-                        } else if (errData.message) {
-                            msg = errData.message;
-                        }
-                    } catch {}
-                    alert(msg);
-                    throw new Error(msg);
-                }
-                return response.json();
-            })
-            .then(data => {
-               
-                var modal = bootstrap.Modal.getInstance(document.getElementById('editarArticuloModal'));
-                modal.hide();
-
-               
-                let row = document.querySelector(`button[data-id="${id}"]`).closest('tr');
-                row.children[1].textContent = data.descripcion ?? '';
-                row.children[2].textContent = data.fabricante ?? '';
-                row.children[3].textContent = data.codigo_barras ?? '';
-                row.children[4].textContent = data.precio ?? '';
-                row.children[5].textContent = data.stock ?? '';
-                
-            })
-            .catch(error => {
-                
+                document.getElementById('editarArticuloForm').action = '/articulos/' + id;
             });
-        });
-    }
-});
+        }
+    });
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('articuloForm');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const formData = new FormData(form);
+
+                fetch('/articulos', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Accept': 'application/json'
+                        },
+                        body: formData
+                    })
+                    .then(async response => {
+                        if (!response.ok) {
+                            let msg = 'Error al guardar el artículo.';
+                            try {
+                                const errData = await response.json();
+                                if (errData.errors) {
+                                    msg = Object.values(errData.errors).flat().join('<br>');
+                                } else if (errData.message) {
+                                    msg = errData.message;
+                                }
+                            } catch {}
+                            Swal.fire({
+                                icon: 'error',
+                                title: '¡Error!',
+                                html: msg,
+                                timer: 3000,
+                                showConfirmButton: false
+                            });
+                            throw new Error(msg);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        var modal = bootstrap.Modal.getInstance(document.getElementById('crearArticuloModal'));
+                        modal.hide();
+
+                        form.reset();
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Éxito!',
+                            text: 'Artículo agregado correctamente.',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+
+                        setTimeout(() => location.reload(), 2000);
+                    })
+                    .catch(error => {
+
+                    });
+            });
+        }
+    });
 </script>
 @endpush

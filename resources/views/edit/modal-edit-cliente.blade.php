@@ -51,5 +51,65 @@
             });
         }
     });
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('editarClienteForm');
+    if (form) {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const id = document.getElementById('editarClienteId').value;
+            const formData = new FormData(form);
+
+            fetch('/clientes/' + id, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json'
+                },
+                body: formData
+            })
+            .then(async response => {
+                if (!response.ok) {
+                    let msg = 'Error al actualizar el cliente.';
+                    try {
+                        const errData = await response.json();
+                        if (errData.errors) {
+                            msg = Object.values(errData.errors).flat().join('<br>');
+                        } else if (errData.message) {
+                            msg = errData.message;
+                        }
+                    } catch {}
+                    Swal.fire({
+                        icon: 'error',
+                        title: '¡Error!',
+                        html: msg,
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
+                    throw new Error(msg);
+                }
+                return response.json();
+            })
+            .then(data => {
+                var modal = bootstrap.Modal.getInstance(document.getElementById('editarClienteModal'));
+                modal.hide();
+
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Éxito!',
+                    text: 'Cliente actualizado correctamente.',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
+                setTimeout(() => location.reload(), 2000);
+            })
+            .catch(error => {
+
+            });
+        });
+    }
+});
 </script>
 @endpush

@@ -131,7 +131,7 @@ Este proyecto es una API RESTful desarrollada con Laravel para la gestión de un
 ### Productos
 ```
 POST   /api/v1/productos          → Crear producto  
-GET    /apiv1/productos          → Listar productos (con filtros y paginación)  
+GET    /api/v1/productos          → Listar productos (con filtros y paginación)  
 GET    /api/v1/productos/{id}     → Mostrar un producto  
 PUT    /api/v1/productos/{id}     → Actualizar producto  
 DELETE /api/v1/productos/{id}     → Eliminar producto

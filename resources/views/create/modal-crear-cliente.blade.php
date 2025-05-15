@@ -59,12 +59,18 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     } catch {}
                     document.getElementById('formErrores').innerHTML = msg;
+                    Swal.fire({
+                        icon: 'error',
+                        title: '¡Error!',
+                        html: msg,
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
                     throw new Error(msg);
                 }
                 return response.json();
             })
             .then(data => {
-
                 document.getElementById('formErrores').innerHTML = '';
 
                 var modal = bootstrap.Modal.getInstance(document.getElementById('crearClienteModal'));
@@ -72,12 +78,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 form.reset();
 
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Éxito!',
+                    text: 'Cliente agregado correctamente.',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
+                setTimeout(() => location.reload(), 2000);
             })
             .catch(error => {
-
+                
             });
         });
     }
 });
 </script>
 @endpush
+

@@ -39,64 +39,64 @@
 
 @push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('articuloForm');
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('editarArticuloForm');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
 
-                const formData = new FormData(form);
+            const id = document.getElementById('editarArticuloId').value;
+            const formData = new FormData(form);
 
-                fetch('/articulos', {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                            'Accept': 'application/json'
-                        },
-                        body: formData
-                    })
-                    .then(async response => {
-                        if (!response.ok) {
-                            let msg = 'Error al guardar el Articulo.';
-                            try {
-                                const errData = await response.json();
-                                if (errData.errors) {
-                                    msg = Object.values(errData.errors).flat().join('<br>');
-                                } else if (errData.message) {
-                                    msg = errData.message;
-                                }
-                            } catch {}
-                            document.getElementById('formErrores').innerHTML = msg;
-                            throw new Error(msg);
+            fetch('/articulos/' + id, {
+                method: 'POST', 
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json'
+                },
+                body: formData
+            })
+            .then(async response => {
+                if (!response.ok) {
+                    let msg = 'Error al actualizar el artículo.';
+                    try {
+                        const errData = await response.json();
+                        if (errData.errors) {
+                            msg = Object.values(errData.errors).flat().join('<br>');
+                        } else if (errData.message) {
+                            msg = errData.message;
                         }
-                        return response.json();
-                    })
-                    .then(data => {
-                        document.getElementById('formErrores').innerHTML = '';
-
-                        var modal = bootstrap.Modal.getInstance(document.getElementById('crearArticuloModal'));
-                        modal.hide();
-
-                        form.reset();
-
-                        let tbody = document.querySelector('table tbody');
-                        let row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${data.ArticuloId ?? ''}</td>
-                            <td>${data.descripcion ?? ''}</td>
-                            <td>${data.fabricante ?? ''}</td>
-                            <td>${data.codigo_barras ?? ''}</td>
-                            <td>${data.precio ?? ''}</td>
-                            <td>${data.stock ?? ''}</td>
-                            <td>${data.created_at ? (new Date(data.created_at)).toLocaleString() : ''}</td>
-                        `;
-                        tbody.appendChild(row);
-                    })
-                    .catch(error => {
-
+                    } catch {}
+                    Swal.fire({
+                        icon: 'error',
+                        title: '¡Error!',
+                        html: msg,
+                        timer: 3000,
+                        showConfirmButton: false
                     });
+                    throw new Error(msg);
+                }
+                return response.json();
+            })
+            .then(data => {
+                var modal = bootstrap.Modal.getInstance(document.getElementById('editarArticuloModal'));
+                modal.hide();
+
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Éxito!',
+                    text: 'Artículo actualizado correctamente.',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
+                setTimeout(() => location.reload(), 2000);
+            })
+            .catch(error => {
+                
             });
-        }
-    });
+        });
+    }
+});
 </script>
 @endpush
