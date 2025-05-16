@@ -1,5 +1,4 @@
 html, body {
-    height: 100%;
     min-height: 100%;
 }
 
@@ -96,4 +95,12 @@ body {
     color: #bbb;
     background-color: #f1f1f1;
     cursor: not-allowed;
+}
+
+.table-responsive {
+    max-height: 400px;
+    overflow-y: auto;
+}
+.table-responsive table {
+    margin-bottom: 0;
 }

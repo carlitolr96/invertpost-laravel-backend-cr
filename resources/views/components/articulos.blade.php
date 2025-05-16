@@ -17,54 +17,56 @@
     </div>
 
     @if ($articulos->count() > 0)
-    <table class="table table-striped table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Fabricante</th>
-                <th>Codigo de Barra</th>
-                <th>Precio</th>
-                <th>Stock</th>
-                <th>Fecha de Registro</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($articulos as $articulo)
-            <tr>
-                <td>{{ $articulo->ArticuloId }}</td>
-                <td>{{ $articulo->descripcion }}</td>
-                <td>{{ $articulo->fabricante }}</td>
-                <td>{{ $articulo->codigo_barras }}</td>
-                <td>{{ $articulo->precio }}</td>
-                <td>{{ $articulo->stock }}</td>
-                <td>{{ $articulo->created_at }}</td>
-                <td>
-                    <button type="button" class="btn btn-sm btn-warning"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editarArticuloModal"
-                        data-id="{{ $articulo->ArticuloId }}"
-                        data-descripcion="{{ $articulo->descripcion }}"
-                        data-fabricante="{{ $articulo->fabricante }}"
-                        data-codigo_barras="{{ $articulo->codigo_barras }}"
-                        data-precio="{{ $articulo->precio }}"
-                        data-stock="{{ $articulo->stock }}">
-                        <i class="fa fa-edit"></i>
-                    </button>
-
-                    <form action="{{ route('articulos.destroy', $articulo->ArticuloId) }}" method="POST" class="d-inline form-eliminar-articulo">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger">
-                            <i class="fa fa-trash"></i>
+    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Fabricante</th>
+                    <th>Codigo de Barra</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Fecha de Registro</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($articulos as $articulo)
+                <tr>
+                    <td>{{ $articulo->ArticuloId }}</td>
+                    <td>{{ $articulo->descripcion }}</td>
+                    <td>{{ $articulo->fabricante }}</td>
+                    <td>{{ $articulo->codigo_barras }}</td>
+                    <td>{{ $articulo->precio }}</td>
+                    <td>{{ $articulo->stock }}</td>
+                    <td>{{ $articulo->created_at }}</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-warning"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editarArticuloModal"
+                            data-id="{{ $articulo->ArticuloId }}"
+                            data-descripcion="{{ $articulo->descripcion }}"
+                            data-fabricante="{{ $articulo->fabricante }}"
+                            data-codigo_barras="{{ $articulo->codigo_barras }}"
+                            data-precio="{{ $articulo->precio }}"
+                            data-stock="{{ $articulo->stock }}">
+                            <i class="fa fa-edit"></i>
                         </button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+
+                        <form action="{{ route('articulos.destroy', $articulo->ArticuloId) }}" method="POST" class="d-inline form-eliminar-articulo">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 
     <div class="d-flex justify-content-center">
         {{ $articulos->links() }}
@@ -79,26 +81,26 @@
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.form-eliminar-articulo').forEach(form => {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "¡No podrás revertir esto!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.form-eliminar-articulo').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "¡No podrás revertir esto!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
             });
         });
     });
-});
 </script>
 @endpush

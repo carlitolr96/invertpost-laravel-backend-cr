@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TblPedido extends Model
@@ -14,10 +13,10 @@ class TblPedido extends Model
 
     protected $fillable = [
         'ClienteId',
+        'ArticuloId',
         'fecha_pedido',
     ];
 
-    // Relaciones
     public function cliente(): BelongsTo
     {
         return $this->belongsTo(TblCliente::class, 'ClienteId', 'ClienteId');
@@ -28,8 +27,8 @@ class TblPedido extends Model
         return $this->hasOne(TblFactura::class, 'PedidoId', 'PedidoId');
     }
 
-    public function articulos(): HasMany
+    public function articulo(): BelongsTo
     {
-        return $this->hasMany(TblPedido::class, 'PedidoId', 'PedidoId');
+        return $this->belongsTo(TblArticulo::class, 'ArticuloId', 'ArticuloId');
     }
 }

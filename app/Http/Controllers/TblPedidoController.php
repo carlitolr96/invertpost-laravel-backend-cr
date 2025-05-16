@@ -3,30 +3,45 @@
 namespace App\Http\Controllers;
 
 use App\Models\TblPedido;
+use App\Models\TblCliente;
+use App\Models\TblArticulo;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
 class TblPedidoController extends Controller
 {
-     /**
-     * @param Request $request
-     * @return View
+    /**
+     * Muestra la vista con los pedidos paginados.
+     *
+     * @return \Illuminate\View\View
      */
-    public function index(Request $request): \Illuminate\Contracts\View\View
+    public function index(Request $request)
     {
-        $pedidos = TblPedido::paginate(10);
-        return view('components.pedidos', ['pedidos' => $pedidos]);
+        $pedidos = TblPedido::with('cliente', 'articulo')->paginate(10);
+        $clientes = TblCliente::all();
+        $articulos = TblArticulo::all();
+        return view('components.pedidos', compact('pedidos', 'clientes', 'articulos'));
     }
 
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'cliente_id' => 'required|exists:tblclientes,ClienteId',
+            'articulo_id' => 'required|exists:tblarticulos,ArticuloId'
+        ]);
+        TblPedido::create([
+            'ClienteId' => $request->cliente_id,
+            'ArticuloId' => $request->articulo_id,
+            'fecha_pedido' => now(),
+        ]);
+        
+        return redirect()->route('pedidos.index')->with('success', 'Pedido agregado correctamente.');
+    }
+
     public function indexApi(Request $request): JsonResponse
     {
         $pedidos = TblPedido::query();
 
-        // Filtros
         if ($request->has('ClienteId')) {
             $pedidos->where('ClienteId', $request->query('ClienteId'));
         }
@@ -34,9 +49,8 @@ class TblPedidoController extends Controller
             $pedidos->where('fecha_pedido', $request->query('fecha_pedido'));
         }
 
-        // Paginación
         $perPage = $request->get('per_page', 10);
-        $pedidos = $pedidos->paginate($perPage);
+        $pedidos = $pedidos->with('cliente')->paginate($perPage);
 
         return response()->json([
             'data' => $pedidos->items(),
@@ -47,7 +61,7 @@ class TblPedidoController extends Controller
         ]);
     }
 
-    public function store(Request $request): JsonResponse
+    public function storeApi(Request $request): JsonResponse
     {
         $request->validate([
             'ClienteId' => 'required|exists:tblclientes,ClienteId',
@@ -60,7 +74,7 @@ class TblPedidoController extends Controller
 
     public function show(int $id): JsonResponse
     {
-        $pedido = TblPedido::with('cliente', 'articulos', 'factura')->find($id); // Eager load relaciones
+        $pedido = TblPedido::with('cliente', 'articulos', 'factura')->find($id);
         if (!$pedido) {
             return response()->json(['message' => 'Pedido no encontrado'], 404);
         }
@@ -83,14 +97,14 @@ class TblPedidoController extends Controller
         return response()->json($pedido);
     }
 
-    public function destroy(int $id): JsonResponse
+    public function destroy($id)
     {
         $pedido = TblPedido::find($id);
         if (!$pedido) {
-            return response()->json(['message' => 'Pedido no encontrado'], 404);
+            return redirect()->route('pedidos.index')->with('error', 'Pedido no encontrado.');
         }
 
         $pedido->delete();
-        return response()->json(['message' => 'Pedido eliminado']);
+        return redirect()->route('pedidos.index')->with('success', 'Pedido eliminado correctamente.');
     }
 }

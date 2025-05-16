@@ -5,7 +5,6 @@
 @include('edit.modal-edit-cliente')
 
 <div>
-    @if ($clientes->count() > 0)
     <div class="row">
         <div class="col-8">
             <h5 class="mb-4">Listado de Clientes</h5>
@@ -17,6 +16,7 @@
         </div>
     </div>
 
+    @if ($clientes->count() > 0)
     <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
         <table class="table table-striped table-hover">
             <thead class="table-dark">
@@ -74,26 +74,26 @@
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.form-eliminar-cliente').forEach(form => {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "¡No podrás revertir esto!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.form-eliminar-cliente').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "¡No podrás revertir esto!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
             });
         });
     });
-});
 </script>
 @endpush
