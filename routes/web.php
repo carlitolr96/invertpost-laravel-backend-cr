@@ -33,10 +33,14 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
     // Vista web
-    Route::get('/components/clientes', [TblClienteController::class, 'index'])->name('components.clientes');
-    Route::get('/components/articulos', [TblArticuloController::class, 'index'])->name('components.articulos');
-    Route::get('/components/pedidos', [TblPedidoController::class, 'index'])->name('components.pedidos');
-    Route::get('/components/facturas', [TblFacturaController::class, 'index'])->name('components.facturas');
+    Route::get('/clientes', [TblClienteController::class, 'indexApi'])->name('clientes');
+    Route::get('/articulos', [TblArticuloController::class, 'indexApi'])->name('articulos');
+    Route::get('/pedidos', [TblPedidoController::class, 'indexApi'])->name('pedidos');
+    Route::get('/facturas', [TblFacturaController::class, 'indexApi'])->name('facturas');
+
+    Route::get('/usuario', function () {
+        return view('components.usuario');
+    })->name('usuario.perfil');
 
     // Rutas para edición de recursos web (formularios)
     Route::get('/clientes/{cliente}/edit', [TblClienteController::class, 'edit'])->name('clientes.edit');
@@ -50,4 +54,5 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('clientes', TblClienteController::class);
     Route::resource('articulos', TblArticuloController::class);
     Route::resource('pedidos', TblPedidoController::class);
+    Route::resource('facturas', TblFacturaController::class);
 });

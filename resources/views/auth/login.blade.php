@@ -8,14 +8,10 @@
                 <div class="text-center mb-3">
                     <h1 class="h3 mb-0">InvenPost</h1>
                 </div>
-
                 <h2 class="fs-6 fw-normal text-center text-secondary mb-4">Inicia sesión en tu cuenta</h2>
-
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
-
                     <div class="row gy-3">
-
                         <div class="col-12">
                             <div class="form-floating">
                                 <input

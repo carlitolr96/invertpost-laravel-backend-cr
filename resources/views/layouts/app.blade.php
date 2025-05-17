@@ -30,22 +30,38 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link" href="/components/clientes">Clientes</a>
+                <a class="nav-link" href="/clientes">Clientes</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/components/articulos">Artículos</a>
+                <a class="nav-link" href="/articulos">Artículos</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/components/pedidos">Pedidos</a>
+                <a class="nav-link" href="/pedidos">Pedidos</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/components/facturas">Facturas</a>
+                <a class="nav-link" href="/facturas">Facturas</a>
               </li>
             </ul>
-            <form action="{{ route('logout') }}" method="POST" class="d-flex">
-              @csrf
-              <button type="submit" class="btn btn-danger"><i class="fa-solid fa-right-to-bracket"></i></button>
-            </form>
+
+            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+              <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fa-solid fa-user"></i>
+                  {{ Auth::user()->usuario }}
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                  <li><a class="dropdown-item" href="/usuario">Perfil</a></li>
+                  <li>
+                    <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                      Cerrar sesión <i class="fa-solid fa-right-to-bracket"></i>
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                      @csrf
+                    </form>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
 
           @endauth
@@ -60,7 +76,7 @@
 
   @stack('scripts')
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
   </script>
